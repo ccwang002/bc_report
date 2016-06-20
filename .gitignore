@@ -1,0 +1,25 @@
+# Python virtualenv
+[.]venv
+
+# Python runtime
+__pycache__
+*.py[cod]
+
+# C extension
+*.so
+
+# Package-related files
+*.egg
+*.egg-info
+dist
+build
+eggs
+sdist
+
+# Unit test / coverage report
+.coverage
+.tox
+nosetests.xml
+
+# Documentation
+docs/_build
