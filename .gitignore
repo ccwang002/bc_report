@@ -16,6 +16,9 @@ build
 eggs
 sdist
 
+# PyCharm IDE
+.idea/
+
 # Unit test / coverage report
 .coverage
 .tox

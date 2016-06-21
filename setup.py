@@ -93,7 +93,7 @@ setup(
     zip_safe=False,
     entry_points={
         'console_scripts': [
-            'bc_report = bc_report.cli:generate_report',
+            'bc_report = bc_report.cli:generate_report_cli',
         ],
     },
 

@@ -1,9 +1,11 @@
-import logging
 import importlib
+import logging
+from pathlib import Path
+import shutil
+import sys
 import click
 
 from . import create_logger
-
 
 logger = create_logger(__name__)
 
@@ -51,6 +53,14 @@ def create_log_format(log_time, color):
     return log_formatter
 
 
+ReadableAbsoluteFolderPath = click.Path(
+    exists=True,
+    dir_okay=True, file_okay=False,
+    readable=True,
+    resolve_path=True
+)
+
+
 @click.command(context_settings={
     'help_option_names': ['-h', '--help']
 })
@@ -67,16 +77,20 @@ def create_log_format(log_time, color):
     help='Produce colorful logs',
 )
 @click.option(
+    '-f', '--force/--no-force', default=False,
+    help='Overwrite the output folder if it exists',
+)
+@click.option(
     '-p', '--pipeline',
-    metavar='[bc_pipelines.]mypipeline.report.Report',
+    metavar='bc_pipelines.mypipeline.report.Report',
     help='Full path to the pipeline class',
     required=True,
 )
-@click.argument('job_dir')
-@click.argument('out_dir', default='./output')
-def generate_report(
+@click.argument('job_dir', type=ReadableAbsoluteFolderPath)
+@click.argument('out_dir', type=click.Path(), default='./output')
+def generate_report_cli(
     pipeline, job_dir, out_dir,
-    verbose, log_time, color
+    verbose, log_time, color, force,
 ):
     # Setup console logging
     console = logging.StreamHandler()
@@ -106,7 +120,30 @@ def generate_report(
     )
     pipe_module_name, pipe_class_name = pipeline.rsplit('.', 1)
     pipe_module = importlib.import_module(pipe_module_name)
-    pipe_cls = getattr(pipe_module, pipe_class_name)
+    pipeline_report_cls = getattr(pipe_module, pipe_class_name)
+
+    # Processing the job and output folders
+    job_dir_p, out_dir_p = Path(job_dir), Path(out_dir)
+    if out_dir_p.exists():
+        if not force:
+            sys.exit(
+                "Cannot overwrite output folder (force overwriting by passing "
+                "--force option). Current operation has been aborted."
+            )
+        logger.warning(
+            "Report output folder {:s} has already existed! ..."
+            .format(out_dir_p.as_posix())
+        )
+        # remove the output folder completely
+        shutil.rmtree(out_dir_p.as_posix())
+    # Create the output folder
+    out_dir_p.mkdir(parents=True)
+
+    # Initiate the report class
+    report = pipeline_report_cls(job_dir_p)
+
+    # Generate the report
+    report.generate(out_dir_p)
 
     logger.info("Job successfully end. Print message")
     print(CAVEAT_MESSAGE.format(out_dir))
