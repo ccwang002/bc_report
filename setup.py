@@ -1,6 +1,7 @@
 import sys
 import re
 from os import path
+from pathlib import Path
 from setuptools import setup, find_packages
 from codecs import open
 
@@ -27,14 +28,20 @@ with utf8_open("README.rst") as readme_f:
     with utf8_open("CHANGELOG.rst") as changes_f:
         long_description = readme_f.read() + '\n' + changes_f.read()
 
-# recursively find all files under ngcloud/pipe/report
-# pipe_template_data = [
-#     path.relpath(path.join(root, f), 'ngcloud/pipe')
-#     for root, _, files in walk('ngcloud/pipe/report')
-#     for f in files
-# ]
+# Recursively find all files under bc_pipelines/*/{static,templates}
+package_data = {}
+pipelines = list(Path('bc_pipelines').iterdir())
+for pipeline in pipelines:
+    files = []
+    for folder in ['static', 'templates']:
+        files.extend(
+            p.relative_to(pipeline).as_posix()
+            for p in pipeline.glob('%s/**/*' % folder)
+            if p.name not in ['.DS_Store'] and not p.is_dir()
+        )
+    package_data[pipeline.as_posix().replace('/', '.')] = files
 
-# Define pacakge dependencies
+# Define package dependencies
 pkg_deps = [
     'PyYAML >= 3.11',
     'Jinja2 >= 2.8',
@@ -82,14 +89,13 @@ setup(
     },
 
     packages=find_packages(
+        include=['bc_report', 'bc_pipelines.*'],
         exclude=[
             'contrib', 'docs', 'examples',
             '*.tests', '*.tests.*', 'tests.*', 'tests',
         ]
     ),
-    package_data={
-        # 'ngcloud.pipe': pipe_template_data,
-    },
+    package_data=package_data,
     zip_safe=False,
     entry_points={
         'console_scripts': [
