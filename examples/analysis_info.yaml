@@ -1,0 +1,43 @@
+conditions:
+  - control:
+    - sample:
+      - sample_R1.fastq
+      - sample_R2.fastq
+  - test:
+    - another:
+      - another_R1.fastq
+      - another_R2.fastq
+    - yet_another:
+      - yet_another_R1.fastq
+      - yet_another_R2.fastq
+
+data_sources:
+  - sample_R1.fastq:
+      path: 1/sample_R1.fastq
+      type: FASTQ
+      strand: R1
+  - sample_R2.fastq:
+      path: 1/sample_R2.fastq
+      type: FASTQ
+      strand: R2
+  - another_R1.fastq:
+      path: 1/another_R1.fastq
+      type: FASTQ
+      strand: R1
+  - another_R2.fastq:
+      path: 1/another_R2.fastq
+      type: FASTQ
+      strand: R2
+  - yet_another_R1.fastq:
+      path: 1/yet_another_R1.fastq
+      type: FASTQ
+      strand: R1
+  - yet_another_R2.fastq:
+      path: 1/yet_another_R2.fastq
+      type: FASTQ
+      strand: R2
+parameters:
+  paramA: true
+  paramB:
+    - some value 1
+    - some value 2
