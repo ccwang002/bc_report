@@ -1,0 +1,8 @@
+<div id="nav-stage">
+  <ul class="nav nav-pills nav-justified">
+  {% for name, html, desc in stage_mapping %}
+    <li{% if active == name %} class="active"{% endif %}><a href="{{ html }}">{{ desc }}</a></li>
+  {% endfor %}
+    <li><a href="promotion.html">Promotion</a></li>
+  </ul>
+</div>

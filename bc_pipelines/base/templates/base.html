@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="static/favicon.ico">
+    <title>{% block title %}Base Template{% endblock %}</title>
+
+    <!-- Custom styles for this template -->
+    <link href="{{ static('css/site.css') }}" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    {% include "_nav.html" %}
+
+    <div id="wrap">
+      <div class="container">
+        {% block content %}{% endblock %}
+        <div id="push"></div>
+      </div><!-- /.container -->
+    </div><!-- /.wrap -->
+
+    <div id="footer">
+      <div class="container">
+        {% include "_footer.html" %}
+      </div>
+    </div>
+
+    {% include "includes/footer_scripts.html" %}
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

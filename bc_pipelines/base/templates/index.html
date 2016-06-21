@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %}
+  Summary result of Tuxedo pipline
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+  <h1>Project done!</h1>
+  <p>Congratulations!</p>
+  <p><a class="btn btn-danger btn-lg" role="button" href="#downloads">Result Bundle Download</a></p>
+</div>
+
+{% with active='summary' %}
+{% include "_stage_pipe.html" %}
+{% endwith %}
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h3 class="panel-title">Computation Statistics</h3>
+      </div>
+      <div class="panel-body">
+        <h4>Time Usage</h4>
+        <p>From YYYY-MM-DD mm:hh to YYYY-MM-DD mm:hh using xxhrs xxmins xxsec.</p>
+        <h4>CPU, Disk Usage</h4>
+        <p>Occupied CPU time xxx.xxhrs, xx.xTB disk space.</p>
+        <h4>Owner</h4>
+        <p>{{ owner|default('NTU CGM') }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Input Parameters</h3>
+      </div>
+      <div class="panel-body">
+        <h4>Pipeline used:</h4>
+        <p>Tuxedo</p>
+        <h4>Sample input:</h4>
+        <p>
+          {{ analysis_info.samples.keys() | join(', ') }}
+        </p>
+        <h4>Parameters:</h4>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">Summary</h3>
+      </div>
+      <div class="panel-body">
+      	  <p>Summary</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-12">
+    <div class="panel panel-danger panel-download" id="downloads">
+      <div class="panel-heading">
+        <h3 class="panel-title">Bundle Download</h3>
+      </div><!-- /.panel-heading -->
+      <div class="panel-body">
+        <p class="lead">Download the result in different formats:</p>
+        <button type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-file"></span>
+          Final results (in tar.gz)
+        </button>
+        <button type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-file"></span>
+          Reports only (in zip)
+        </button>
+        <button type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-download-alt"></span>
+          Meta Results (large, in tar.gz)
+        </button>
+      </div><!-- /.panel-body -->
+    </div><!-- /.panel -->
+  </div>
+</div>
+{% endblock %}
