@@ -1,0 +1,31 @@
+{
+  "name": "bc_report",
+  "version": "0.1.0",
+  "description": "BioCloud Report Style",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ccwang002/bc_report.git"
+  },
+  "author": {
+    "name": "Liang-Bo Wang",
+    "url": "http://liang2.tw/"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ccwang002/bc_report/issues"
+  },
+  "homepage": "https://github.com/ccwang002/bc_report#readme",
+  "dependencies": {
+    "autoprefixer": "^6.3.6",
+    "gulp": "^3.9.1",
+    "gulp-postcss": "^6.1.1",
+    "gulp-sass": "^2.3.2",
+    "postcss-csso": "^1.1.2"
+  }
+}

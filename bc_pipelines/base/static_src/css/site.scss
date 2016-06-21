@@ -1,0 +1,90 @@
+/* Site-wide stylesheet
+ *
+ * All pages should include this stylesheet. It imports all bootstrap related
+ * variables, mixins, and styles with proper customization.
+ *
+ * For special pages that want to roll out its own SCSS stylesheet, import the
+ * following files so there will not be duplicated style definitions:
+ *
+ *      // Core variables and mixins
+ *      @import "variables";
+ *      @import "bootstrap-variables";
+ *      @import "vendors/bootstrap/variables";
+ *      @import "vendors/bootstrap/mixins";
+ *      @import "mixins";
+ */
+
+// Import site-wide variables
+@import "variables";
+
+// Import custom Bootstrap variables
+@import "bootstrap-variables";
+
+// Import Bootstrap for Sass
+@import "bootstrap";
+
+// Import Font-Awesome Icon sets
+@import "font-awesome";
+
+// Import site-wide mixins
+// @import "mixins";
+
+// Import pages
+@import "pages/dashboard";
+@import "pages/data_sources";
+@import "pages/experiements";
+@import "pages/analyses";
+
+
+
+// Navbar
+.navbar-form {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+
+// Footer
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: $footer-height + $footer-gap;
+    @media screen and (max-width: $screen-md-max) {
+        margin-bottom: $footer-height-larger + $footer-gap-larger;
+    }
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: $footer-height;
+    @media screen and (max-width: $screen-md-max) {
+        height: $footer-height-larger;
+    }
+    background-color: $navbar-default-bg;
+    .container {
+        padding: 0 1em;
+        .text-muted {
+            margin: 1em 0px;
+        }
+    }
+}
+
+
+// General styles
+.form-tip {
+    vertical-align: middle;
+}
+
+.alert {
+    > .form-inline,
+    > .form-inline > p {
+        margin-bottom: 0px;
+    }
+}

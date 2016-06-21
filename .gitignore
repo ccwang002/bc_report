@@ -26,3 +26,8 @@ nosetests.xml
 
 # Documentation
 docs/_build
+
+# Template development
+node_modules/
+
+output/
