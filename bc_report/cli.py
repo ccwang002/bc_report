@@ -18,7 +18,7 @@ Quick remainder for serving current folder through http:
 '''
 
 
-def creat_log_format(log_time, color):
+def create_log_format(log_time, color):
     color_log_fmt = (
         '%(log_color)s%(levelname)-7s%(reset)s %(cyan)s%(name)-8s%(reset)s '
         '%(log_color)s[%(funcName)s]%(reset)s %(message)s'
@@ -93,7 +93,7 @@ def generate_report(
     all_loggers.setLevel(loglevel)
 
     # Set log format
-    console.setFormatter(creat_log_format(log_time, color))
+    console.setFormatter(create_log_format(log_time, color))
     logger.debug(
         'Using pipeline: {} to parse job folder {} and generate report at {}.'
         .format(pipeline, job_dir, out_dir)
