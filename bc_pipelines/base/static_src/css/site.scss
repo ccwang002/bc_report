@@ -29,62 +29,81 @@
 // Import site-wide mixins
 // @import "mixins";
 
-// Import pages
-@import "pages/dashboard";
-@import "pages/data_sources";
-@import "pages/experiements";
-@import "pages/analyses";
 
+// Footer
+
+.footer {
+    padding: 1em;
+}
 
 
 // Navbar
-.navbar-form {
-    margin-right: 0px;
-    margin-left: 0px;
+
+main {
+    @include container-fixed(0);
 }
 
+$navbar-padding-top: 20px;
+$navbar-padding-horizontal: 20px;
+$navbar-padding-bottom: 20px;
 
-// Footer
-html {
-  position: relative;
-  min-height: 100%;
-}
+.btn-nav-show {
+    position: fixed;
+    top: $navbar-padding-top;
 
-body {
-    /* Margin bottom by footer height */
-    margin-bottom: $footer-height + $footer-gap;
-    @media screen and (max-width: $screen-md-max) {
-        margin-bottom: $footer-height-larger + $footer-gap-larger;
+    @media (max-width: $screen-xs-max) {
+        right: 0;
     }
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    /* Set the fixed height of the footer here */
-    height: $footer-height;
-    @media screen and (max-width: $screen-md-max) {
-        height: $footer-height-larger;
+.btn-nav-collapse {
+    float: right;
+    margin-right: 0.5em;
+}
+
+.sidebar {
+    // hide it first (ex. mobile)
+    display: none;
+    padding-top: $navbar-padding-top;
+    padding-bottom: $navbar-padding-bottom;
+    padding-left: $navbar-padding-horizontal;
+    padding-right: $navbar-padding-horizontal;
+
+    @media (min-width: $screen-sm-min) {
+        // desktop
+        position: fixed;
+        top: 0px;
+        bottom: 0;
+        left: 0;
+        min-width: 16%;
+        z-index: 1000;
+        display: block;
+        overflow-x: hidden;
+        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+        background-color: $gray-lighter;
+        border-right: 1px solid #eee;
     }
-    background-color: $navbar-default-bg;
-    .container {
-        padding: 0 1em;
-        .text-muted {
-            margin: 1em 0px;
-        }
+
+    @media (max-width: $screen-md-max) {
+        border-bottom: 1px solid $gray-dark;
     }
 }
 
 
-// General styles
-.form-tip {
-    vertical-align: middle;
+/* Sidebar navigation */
+.nav-sidebar {
+    margin-right: -($navbar-padding-horizontal + 1px);  // padding + 1px border
+    margin-bottom: $navbar-padding-bottom;
+    margin-left: -$navbar-padding-horizontal;
+}
+.nav-sidebar > li > a {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+    color: #fff;
+    background-color: #428bca;
 }
 
-.alert {
-    > .form-inline,
-    > .form-inline > p {
-        margin-bottom: 0px;
-    }
-}

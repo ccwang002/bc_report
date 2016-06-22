@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
-{% block title %}
-  Summary result of Tuxedo pipline
-{% endblock %}
+
+{% block title %}Base Report{% endblock %}
 
 {% block content %}
 <div class="jumbotron">
@@ -9,10 +8,6 @@
   <p>Congratulations!</p>
   <p><a class="btn btn-danger btn-lg" role="button" href="#downloads">Result Bundle Download</a></p>
 </div>
-
-{% with active='summary' %}
-{% include "_stage_pipe.html" %}
-{% endwith %}
 
 <div class="row">
   <div class="col-sm-6">
