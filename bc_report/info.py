@@ -28,8 +28,8 @@ class AnalysisInfo:
             samples.update(condition_samples)
         self.samples = samples
 
-        data_sources = {}
     def parse_data_sources(self) -> Dict[str, DataSource]:
+        data_sources = OrderedDict()
         for data_source in self._raw['data_sources']:
             name, info = next(iter(data_source.items()))
             data_sources[name] = (
