@@ -3,6 +3,8 @@
 {% block title %}RNA-Seq{% endblock title %}
 
 {% block nav %}
-	{% include "rna_seq/_includes/nav.html" %}
+	{% with active="overview" %}
+		{% include "rna_seq/_includes/nav.html" %}
+	{% endwith %}
 {% endblock nav %}
 
