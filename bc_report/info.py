@@ -37,7 +37,7 @@ class AnalysisInfo:
             )
         return data_sources
 
-    def parse_conditions(self) -> Dict[str, DataSource]:
+    def parse_conditions(self) -> Dict[str, Dict]:
         conditions = OrderedDict()
         for condition in self._raw['conditions']:
             condition_name, samples = next(iter(condition.items()))
