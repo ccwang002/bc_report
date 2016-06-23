@@ -35,14 +35,20 @@ class Stage:
         result_dir = self._locate_result_folder()
         return data_info
 
+    def get_context_data(self, data_info):
+        return dict(
+            data_info=data_info,
+            analysis_info=self.report.analysis_info,
+        )
+
     def render(self, data_info, report_root):
         for tpl_name in self.template_entrances:
             tpl = self._env.get_template(tpl_name)
-            html = tpl.render(
-                data_info=data_info,
-                analysis_info=self.report.analysis_info,
-            )
-            with (report_root / tpl_name).open('w') as f:
+            html = tpl.render(self.get_context_data(data_info))
+            # remove folder structure in template name
+            tpl_report_path = report_root / tpl_name.rsplit('/', 1)[1]
+            logger.debug('writing template to %s' % tpl_report_path.as_posix())
+            with tpl_report_path.open('w') as f:
                 f.write(html)
 
     def copy_static(self, report_root):
@@ -153,15 +159,11 @@ class Stage:
 
 class SummaryStage(Stage):
 
-    def render(self, joint_data_info, report_root):
-        for tpl_name in self.template_entrances:
-            tpl = self._env.get_template(tpl_name)
-            html = tpl.render(
-                joint_data_info=joint_data_info,
-                analysis_info=self.report.analysis_info,
-            )
-            with (report_root / tpl_name).open('w') as f:
-                f.write(html)
+    def get_context_data(self, data_info):
+        context = super().get_context_data(data_info)
+        context['joint_data_info'] = context['data_info']
+        del context['data_info']
+        return context
 
     def _locate_result_folder(self):
         return self.report.analysis_info.result_root
