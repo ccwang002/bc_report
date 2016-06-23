@@ -1,5 +1,6 @@
 from collections import OrderedDict, namedtuple
 from pathlib import Path
+from typing import Dict
 import yaml
 from . import create_logger
 
@@ -27,8 +28,8 @@ class AnalysisInfo:
             samples.update(condition_samples)
         self.samples = samples
 
-    def parse_data_sources(self):
         data_sources = {}
+    def parse_data_sources(self) -> Dict[str, DataSource]:
         for data_source in self._raw['data_sources']:
             name, info = next(iter(data_source.items()))
             data_sources[name] = (
@@ -36,7 +37,7 @@ class AnalysisInfo:
             )
         return data_sources
 
-    def parse_conditions(self):
+    def parse_conditions(self) -> Dict[str, DataSource]:
         conditions = OrderedDict()
         for condition in self._raw['conditions']:
             condition_name, samples = next(iter(condition.items()))
