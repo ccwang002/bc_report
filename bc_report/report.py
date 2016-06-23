@@ -22,7 +22,6 @@ class Stage:
     embed_result_joint = []
     embed_result_per_condition = []
     embed_result_per_sample = []
-    embed_result_per_data_source = []
 
     result_folder_name = ''
 
@@ -53,10 +52,9 @@ class Stage:
 
     def copy_static(self, report_root):
         result_dir = self._locate_result_folder()
-        self.copy_static_joint(result_dir, report_root)
-        self.copy_static_per_data_source(result_dir, report_root)
         self.copy_static_per_sample(result_dir, report_root)
         self.copy_static_per_condition(result_dir, report_root)
+        self.copy_static_joint(result_dir, report_root)
 
     @property
     def name(self):
@@ -117,43 +115,43 @@ class Stage:
                 copy(fp, dest_root)
 
     @staticmethod
-    def _copy_static_grouped(
-            result_dir, report_root, desc_sources=None, groups=None
+    def copy_static_grouped(
+        result_root, report_root,
+        src_rel_pth, dest_rel_pth, file_patterns, groups
+    ):
+        all_src_root = result_root / src_rel_pth
+        all_dest_root = report_root / dest_rel_pth
+        for grp in groups:
+            grp_src_root = all_src_root / grp
+            grp_dest_root = all_dest_root / dest_rel_pth / grp
+            grp_dest_root.mkdir(parents=True)
+
+            file_list = discover_file_by_patterns(grp_src_root, file_patterns)
+            for fp in file_list:
+                copy(fp, grp_dest_root)
+
+    @staticmethod
+    def batch_copy_static_grouped(
+        result_dir, report_root, desc_sources, groups=None
     ):
         for desc in desc_sources:
-            all_src_root = result_dir / desc['src']
-            all_dest_root = report_root / 'static'
-
-            for group in groups:
-                grp_src_root = all_src_root / group
-                grp_dest_root = all_dest_root / desc['dest'] / group
-                grp_dest_root.mkdir(parents=True)
-
-                file_list = discover_file_by_patterns(
-                    grp_src_root, desc['patterns']
-                )
-                for fp in file_list:
-                    copy(fp, grp_dest_root)
+            Stage.copy_static_grouped(
+                result_dir, report_root,
+                desc['src'], desc['dest'], groups
+            )
 
     def copy_static_per_condition(self, result_dir, report_root):
-        self._copy_static_grouped(
+        self.batch_copy_static_grouped(
             result_dir, report_root,
             desc_sources=self.embed_result_per_condition,
             groups=self.report.analysis_info.conditions.keys()
         )
 
     def copy_static_per_sample(self, result_dir, report_root):
-        self._copy_static_grouped(
+        self.batch_copy_static_grouped(
             result_dir, report_root,
             desc_sources=self.embed_result_per_sample,
             groups=self.report.analysis_info.samples.keys()
-        )
-
-    def copy_static_per_data_source(self, result_dir, report_root):
-        self._copy_static_grouped(
-            result_dir, report_root,
-            desc_sources=self.embed_result_per_data_source,
-            groups=self.report.analysis_info.data_sources.keys()
         )
 
 
