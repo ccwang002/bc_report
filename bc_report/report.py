@@ -25,13 +25,12 @@ class Stage:
 
     result_folder_name = ''
 
-    def __init__(self, report):
+    def __init__(self, report: 'Report'):
         self.report = report
         self._setup_jinja2()
 
-    def parse(self):
+    def parse(self, analysis_info: AnalysisInfo):
         data_info = {}
-        result_dir = self._locate_result_folder()
         return data_info
 
     def get_context_data(self, data_info):
@@ -195,15 +194,20 @@ class Report:
             for stage_cls in self.stage_classes
         ]
 
-    def parse(self):
+    def parse(self, analysis_info: AnalysisInfo):
         for stage in self.tool_stages:
-            self.data_info[stage.name] = stage.parse()
+            logger.info('Parsing stage %s' % stage.name)
+            self.data_info[stage.name] = stage.parse(analysis_info)
 
     def generate(self, out_dir: Path):
         self.out_root = out_dir
         self.report_root = out_dir / 'report'
         self.report_root.mkdir()
+        logger.info('Parsing result')
+        self.parse(self.analysis_info)
+        logger.info('Rendering report')
         self.render_report()
+        logger.info('Copying static files')
         self.copy_static()
 
     def render_report(self):
