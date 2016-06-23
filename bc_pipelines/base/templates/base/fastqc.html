@@ -2,6 +2,16 @@
 
 {% block title %}FastQC{% endblock title %}
 
+{% block extra_css %}
+	<style>
+		.chart {
+			height: 600px;
+		}
+		#chart-qc-perbase {
+		}
+	</style>
+{% endblock extra_css %}
+
 {% block content %}
 	<h2>QC Info</h2>
 	<div class="table-responsive">
@@ -32,4 +42,38 @@
 			{% endfor %}
 		</tbody>
 	</table>
+	</div>
+	<h2>Per Base Quality Plot</h2>
+	<div id="chart-qc-perbase" class="chart"></div>
 {% endblock content %}
+
+{% block extra_js %}
+	<script src="{{ static('js/vendors/highcharts/highcharts.js') }}" type="text/javascript" charset="utf-8"></script>
+	<script src="{{ static('js/vendors/highcharts/canvas-tools.js') }}" type="text/javascript" charset="utf-8"></script>
+	<script src="{{ static('js/vendors/highcharts/exporting.js') }}" type="text/javascript" charset="utf-8"></script>
+	<script src="{{ static('js/vendors/highcharts/highcharts-export-clientside.js') }}" type="text/javascript" charset="utf-8"></script>
+{% endblock extra_js %}
+
+{% block scripts %}
+	<script type="text/javascript">
+		$(function() {
+			$article = $('article');
+			$sidebar = $('.sidebar');
+			$btnNavShow = $('.btn-nav-show');
+			$('.btn-nav-collapse').click(function() {
+				$article.removeClass('col-sm-10 col-sm-offset-2');
+				$sidebar.hide();
+				$btnNavShow.show();
+				$('.chart').highcharts().reflow();
+			});
+			$btnNavShow.click(function() {
+				$article.addClass('col-sm-10 col-sm-offset-2');
+				$sidebar.show();
+				$btnNavShow.hide();
+				$('.chart').highcharts().reflow();
+			});
+		});
+		var qc_perbase_data = {{ data_info.per_base_quality|tojson|safe }};
+	</script>
+	<script src="{{ static('js/fastqc/fastqc.js') }}" type="text/javascript" charset="utf-8"></script>
+{% endblock scripts %}

@@ -9,7 +9,7 @@ from .utils import (
     merged_copytree,
     discover_file_by_patterns,
     copy,
-    strify_path, humanfmt,
+    strify_path, humanfmt, tojson
 )
 
 logger = create_logger(__name__)
@@ -73,6 +73,7 @@ class Stage:
         )
         self._env.globals['static'] = self._template_static_path
         self._env.globals['humanfmt'] = humanfmt
+        self._env.filters['tojson'] = tojson
 
     def _template_static_path(self, *path_parts):
         return Path('static', *path_parts).as_posix()
