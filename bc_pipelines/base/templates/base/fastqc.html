@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+	<h2>QC Info</h2>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Source</th>
+				{% for module in data_info.MODULES %}
+					<th>{{ module }}</th>
+				{% endfor %}
+			</tr>
+		</thead>
+		<tbody>
+			{% for source, qc_info in data_info.qc_info.items() %}
+			<tr>
+				<th>{{ source }}</th>
+				{% for module in data_info.MODULES %}
+					<td>{{ qc_info.get(module, 'NA') }}</td>
+				{% endfor %}
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock content %}
