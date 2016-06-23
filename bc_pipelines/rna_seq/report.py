@@ -13,7 +13,7 @@ class RNASeqStageMixin(Stage):
     ]
 
 
-class RNASeqFastQCStage(RNASeqStageMixin,FastQCStage):
+class RNASeqFastQCStage(RNASeqStageMixin, FastQCStage):
     template_entrances = ['rna_seq/fastqc.html']
 
 
