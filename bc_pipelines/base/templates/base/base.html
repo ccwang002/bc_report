@@ -14,7 +14,7 @@
 	<main>
 		<header>
 			{% block nav %}
-			{% include "_includes/nav.html" %}
+			{% include "base/_includes/nav.html" %}
 			{% endblock nav %}
 		</header>
 		<article class="col-sm-10 col-sm-offset-2">
@@ -22,7 +22,7 @@
 			{% block content %}{% endblock content %}
 			</div>
 			{% block footer %}
-			{% include "_includes/footer.html" %}
+			{% include "base/_includes/footer.html" %}
 			{% endblock footer %}
 		</article>
 		<button class="btn btn-default btn-nav-show">Show Nav</button>
