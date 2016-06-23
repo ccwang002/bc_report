@@ -90,7 +90,7 @@ $navbar-padding-bottom: 20px;
 }
 
 
-/* Sidebar navigation */
+// Sidebar navigation
 .nav-sidebar {
     margin-right: -($navbar-padding-horizontal + 1px);  // padding + 1px border
     margin-bottom: $navbar-padding-bottom;
@@ -107,3 +107,11 @@ $navbar-padding-bottom: 20px;
     background-color: #428bca;
 }
 
+
+// Condition
+
+.condition-group {
+    .samples {
+        margin-left: 0.75em;
+    }
+}
