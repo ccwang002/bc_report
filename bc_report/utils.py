@@ -1,10 +1,16 @@
-import shutil
-import os
 from decimal import Decimal
+import json
+import os
 from pathlib import Path
+import shutil
 from . import create_logger
 
 logger = create_logger(__name__)
+
+
+def tojson(a, *args, **kw):
+    """Convert the value to JSON"""
+    return json.dumps(a, *args, **kw)
 
 
 def humanfmt(
