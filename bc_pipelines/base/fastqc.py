@@ -54,6 +54,12 @@ class FastQCStage(BaseStage):
         ('Kmer Content', None),
     ])
 
+    STATUS_TO_ICON_CLASS = {
+        'pass': 'fa-check',
+        'fail': 'fa-times',
+        'warn': 'fa-exclamation',
+    }
+
     def accepted_data_sources(self, data_sources) -> OrderedDict:
         filtered_sources = OrderedDict()
         for source_name, source in data_sources.items():
@@ -65,7 +71,6 @@ class FastQCStage(BaseStage):
         data_info = super().parse(analysis_info)
         data_info['qc_info'] = OrderedDict()
         data_info['qc_data'] = {}
-        data_info['MODULES'] = self.MODULES
         result_root = analysis_info.result_root / self._locate_result_folder()
         for source_p, source in self.accepted_data_sources(
             analysis_info.data_sources
@@ -82,3 +87,11 @@ class FastQCStage(BaseStage):
                     data_info['qc_info'][source_p.name] = qc_info
                     data_info['qc_data'][source_p.name] = qc_data
         return data_info
+
+    def get_context_data(self, data_info):
+        context = super().get_context_data(data_info)
+        context.update({
+            'MODULES': self.MODULES,
+            'STATUS_TO_ICON_CLASS': self.STATUS_TO_ICON_CLASS,
+        })
+        return context

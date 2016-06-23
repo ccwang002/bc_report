@@ -4,12 +4,12 @@
 
 {% block content %}
 	<h2>QC Info</h2>
-
-	<table class="table table-striped">
+	<div class="table-responsive">
+	<table class="table table-striped table-responsive">
 		<thead>
 			<tr>
 				<th>Source</th>
-				{% for module in data_info.MODULES %}
+				{% for module in MODULES %}
 					<th>{{ module }}</th>
 				{% endfor %}
 			</tr>
@@ -18,8 +18,15 @@
 			{% for source, qc_info in data_info.qc_info.items() %}
 			<tr>
 				<th>{{ source }}</th>
-				{% for module in data_info.MODULES %}
-					<td>{{ qc_info.get(module, 'NA') }}</td>
+				{% for module in MODULES %}
+					<td>
+						{% if module in qc_info %}
+							<i class="fa {{ STATUS_TO_ICON_CLASS[qc_info[module]] }}"></i>
+						{% else %}
+							NA
+						{% endif %}
+						<span class="sr-only">{{ qc_info.get(module, 'NA') }}</span>
+					</td>
 				{% endfor %}
 			</tr>
 			{% endfor %}
