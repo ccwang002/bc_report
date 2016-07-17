@@ -181,7 +181,6 @@ class Report:
             .format(type(self).__name__)
         )
         self.analysis_info = AnalysisInfo(analysis_dir)
-        self.out_root = None
         self.report_root = None
         self._stages = self.initiate_stages()
         self.data_info = {
@@ -200,10 +199,8 @@ class Report:
             logger.info('Parsing stage %s' % stage.name)
             self.data_info[stage.name] = stage.parse(analysis_info)
 
-    def generate(self, out_dir: Path):
-        self.out_root = out_dir
-        self.report_root = out_dir / 'report'
-        self.report_root.mkdir()
+    def generate(self, report_dir: Path):
+        self.report_root = report_dir
         logger.info('Parsing result')
         self.parse(self.analysis_info)
         logger.info('Rendering report')
