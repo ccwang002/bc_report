@@ -80,7 +80,7 @@ class FastQCStage(BaseStage):
         )
         data_info['per_base_quality'].append({
             'name': source_p.stem,
-            'data': list(df[ 'Mean'].values),
+            'data': list(df['Mean'].values),
             'pointStart': 1,
         })
 
@@ -111,6 +111,14 @@ class FastQCStage(BaseStage):
             self.parse_per_base_quality(
                 data_info, source_p, data_info['qc_data'][source.name]
             )
+
+        # Parse FastQC base statistics
+        data_info['base_stat'] = OrderedDict()
+        for source_p, source in accepted_sources.items():
+            base_stat = dict(data_info['qc_data'][source.name]['Basic Statistics'])
+            base_stat['Total Sequences'] = int(base_stat['Total Sequences'])
+            data_info['base_stat'][source.name] = base_stat
+
         # data source to result mapping
         data_info['raw_fastqc'] = {}
         for source_p, source in accepted_sources.items():
