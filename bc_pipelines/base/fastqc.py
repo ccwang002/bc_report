@@ -120,15 +120,22 @@ class FastQCStage(BaseStage):
             data_info['base_stat'][source.name] = base_stat
 
         # data source to result mapping
-        data_info['raw_fastqc'] = {}
+        data_info['raw_output'] = {}
         for source_p, source in accepted_sources.items():
-            data_info['raw_fastqc'][source_p.name] = (
-                '../result/{fastqc_dir}/{src_name}/{src_name}_fastqc.html'
+            html_link, zip_link = [
+                '../result/{fastqc_dir}/{src_name}/{src_name}_fastqc.{ext}'
                 .format(
                     fastqc_dir=result_root.name,
                     src_name=source_p.stem,
+                    ext=ext,
                 )
-            )
+                for ext in ['html', 'zip']
+            ]
+            data_info['raw_output'][source_p.name] = {
+                'html': html_link,
+                'zip': zip_link,
+                'stem': source_p.stem,
+            }
 
         return data_info
 

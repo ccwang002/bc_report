@@ -41,7 +41,8 @@
 						{% if loop.first %}
 							<th rowspan="2">{{ sample }}</th>
 						{% endif %}
-						<td><a href="{{ data_info.raw_fastqc[source] }}">{{ source }}</a></td>
+						<td><a href="{{ data_info.raw_output[source].html }}">{{ source
+								}}</a></td>
 						{% for module in MODULES %}
 							<td>
 								{% if module in qc_info %}
@@ -86,7 +87,7 @@
 						{% if loop.first %}
 							<th rowspan="2">{{ sample }}</th>
 						{% endif %}
-						<td><a href="{{ data_info.raw_fastqc[source] }}">{{ source }}</a></td>
+						<td><a href="{{ data_info.raw_output[source].html }}">{{ source }}</a></td>
 						<td>{{ "{:,d}".format(base_stat['Total Sequences']) }}</td>
 						<td>{{ base_stat['Sequence length'] }}</td>
 						<td>{{ base_stat['Encoding'] }}</td>
@@ -101,6 +102,47 @@
 
 	<h2>Per Base Quality Plot</h2>
 	<div id="chart-qc-perbase" class="chart"></div>
+
+
+	<h2>Original output files</h2>
+	{% for condition, samples in analysis_info.conditions.items() %}
+		<h3>Condition: {{ condition }}</h3>
+		<table class="table table-striped">
+			<thead>
+			<tr>
+				<th>Sample</th>
+				<th>Data source</th>
+				<th>FastQC Report (HTML)</th>
+				<th>FastQC Data (ZIP)</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for sample, sources in samples.items() %}
+				{% for source in sources %}
+					{% set file_links = data_info.raw_output[source] %}
+					<tr>
+						{% if loop.first %}
+							<td rowspan="{{ sources|length }}">{{ sample }}</td>
+						{% endif %}
+						<td>{{ source }}</td>
+						<td>
+							<a href="{{ file_links.html }}">
+								<i class="fa fa-file-o" aria-hidden="true"></i>
+								<code>{{ file_links.stem }}_fastqc.html</code>
+							</a>
+						</td>
+						<td>
+							<a href="{{ file_links.zip }}">
+								<i class="fa fa-file-o" aria-hidden="true"></i>
+								<code>{{ file_links.stem }}_fastqc.zip</code>
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			{% endfor %}
+			</tbody>
+		</table>
+	{% endfor %}
 {% endblock content %}
 
 {% block extra_js %}
