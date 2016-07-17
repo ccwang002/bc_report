@@ -23,6 +23,7 @@ class AnalysisInfo:
 
         self.data_sources = self.parse_data_sources()
         self.conditions = self.parse_conditions()
+        self.parameters = self.parse_parameters()
         samples = OrderedDict()
         for condition_samples in self.conditions.values():
             samples.update(condition_samples)
@@ -46,3 +47,9 @@ class AnalysisInfo:
                 condition_samples.update(sample)
             conditions[condition_name] = condition_samples
         return conditions
+
+    def parse_parameters(self):
+        parameters = {}
+        for param_name, param_val in self._raw['parameters'].items():
+            parameters[param_name] = param_val
+        return parameters
