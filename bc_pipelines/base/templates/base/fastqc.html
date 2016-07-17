@@ -27,7 +27,7 @@
 		<tbody>
 			{% for source, qc_info in data_info.qc_info.items() %}
 			<tr>
-				<th>{{ source }}</th>
+				<th><a href="{{ data_info.raw_fastqc[source] }}">{{ source }}</a></th>
 				{% for module in MODULES %}
 					<td>
 						{% if module in qc_info %}

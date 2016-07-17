@@ -111,6 +111,14 @@ class FastQCStage(BaseStage):
             self.parse_per_base_quality(
                 data_info, source_p, data_info['qc_data'][source.name]
             )
+        # data source to result mapping
+        data_info['raw_fastqc'] = {}
+        for source_p, source in accepted_sources.items():
+            data_info['raw_fastqc'][source_p.name] = (
+                '../result/fastqc/{src_name}/{src_name}_fastqc.html'
+                .format(src_name=source_p.stem)
+            )
+
         return data_info
 
     def get_context_data(self, data_info):
