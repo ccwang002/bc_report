@@ -43,11 +43,13 @@
 				$article.removeClass('col-sm-10 col-sm-offset-2');
 				$sidebar.hide();
 				$btnNavShow.show();
+				$('.chart', $article).highcharts().reflow();
 			});
 			$btnNavShow.click(function() {
 				$article.addClass('col-sm-10 col-sm-offset-2');
 				$sidebar.show();
 				$btnNavShow.hide();
+				$('.chart', $article).highcharts().reflow();
 			});
 		});
 	</script>
