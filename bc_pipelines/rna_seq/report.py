@@ -2,6 +2,7 @@ from pathlib import Path
 from ..base.report import BaseSummaryHomeStage, BaseReport
 from ..base.fastqc import FastQCStage
 from . import RNASeqStageMixin, here
+from .star import STARStage
 
 
 class RNASeqFastQCStage(RNASeqStageMixin, FastQCStage):
@@ -13,7 +14,7 @@ class RNASeqSummaryHomeStage(RNASeqStageMixin, BaseSummaryHomeStage):
 
 
 class RNASeqReport(BaseReport):
-    stage_classes = [RNASeqSummaryHomeStage, RNASeqFastQCStage]
+    stage_classes = [RNASeqSummaryHomeStage, RNASeqFastQCStage, STARStage]
     static_roots = [
         here / 'static',
         *BaseReport.static_roots,
