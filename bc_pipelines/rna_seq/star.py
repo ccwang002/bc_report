@@ -17,13 +17,14 @@ class STARStage(RNASeqStageMixin, BaseStage):
         return data_info
 
     def collect_raw_output(self, analysis_info: AnalysisInfo):
+        """Render the link to the raw output files"""
         raw_output_filenames = [
             'Aligned.sortedByCoord.out.bam',
             'Aligned.sortedByCoord.out.bam.bai',
             'Log.final.out',
             'Log.out',
             'Log.progress.out',
-            'SJ.out.tab',
+            'SJ.out.tab',   # high confidence collapsed splice junction
         ]
         actual_output_dir = self._locate_result_folder().name
         raw_output_links = {}
