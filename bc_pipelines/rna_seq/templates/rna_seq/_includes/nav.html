@@ -11,7 +11,11 @@
 			<span class="sr-only">(current)</span>
 		{% endif %}</a>
 	</li>
-	<li><a href="">Cufflinks</a></li>
+	<li class=" {% if active == 'cufflinks' %}active{% endif %}">
+		<a href="cufflinks.html">Cufflinks{% if active == 'cufflinks' %}
+			<span class="sr-only">(current)</span>
+		{% endif %}</a>
+	</li>
 	<li><a href="">Cuffdiff</a></li>
 {% endblock nav_stages %}
 

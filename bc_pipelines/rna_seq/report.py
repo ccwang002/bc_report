@@ -3,6 +3,7 @@ from ..base.report import BaseSummaryHomeStage, BaseReport
 from ..base.fastqc import FastQCStage
 from . import RNASeqStageMixin, here
 from .star import STARStage
+from .cufflinks import CufflinksStage
 
 
 class RNASeqFastQCStage(RNASeqStageMixin, FastQCStage):
@@ -14,7 +15,12 @@ class RNASeqSummaryHomeStage(RNASeqStageMixin, BaseSummaryHomeStage):
 
 
 class RNASeqReport(BaseReport):
-    stage_classes = [RNASeqSummaryHomeStage, RNASeqFastQCStage, STARStage]
+    stage_classes = [
+        RNASeqSummaryHomeStage,
+        RNASeqFastQCStage,
+        STARStage,
+        CufflinksStage,
+    ]
     static_roots = [
         here / 'static',
         *BaseReport.static_roots,

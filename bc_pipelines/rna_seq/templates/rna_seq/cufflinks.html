@@ -1,0 +1,63 @@
+{% extends 'rna_seq/base.html' %}
+
+{% block title %}Cufflinks{% endblock title %}
+
+{% block nav %}
+	{% set active = "cufflinks" %}
+	{% include "rna_seq/_includes/nav.html" %}
+{% endblock nav %}
+
+
+{% block content %}
+<h2>Cufflinks</h2>
+
+	<h2>Original output files</h2>
+	{% for condition, samples in analysis_info.conditions.items() %}
+		<h3>Condition: {{ condition }}</h3>
+		<table class="table table-striped">
+			<thead>
+			<tr>
+				<th>Sample</th>
+				<th>Inferred expression FPKM values (TSV)</th>
+				<th>Transcripts (GTF)</th>
+				<th>Log files</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for sample in samples %}
+				{% set file_links = data_info.raw_output[sample] %}
+				<tr>
+					<td>{{ sample }}</td>
+					<!-- Expression FPKM -->
+					<td>
+						{% for f in ['genes.fpkm_tracking', 'isoforms.fpkm_tracking'] %}
+							<a href="{{ file_links[f] }}">
+								<i class="fa fa-file-o" aria-hidden="true"></i>
+								<code>{{ f }}</code>
+							</a>{% if not loop.last %}<br>{% endif %}
+						{% endfor %}
+					</td>
+					<!-- Transcript.gtf -->
+					<td>
+						{% for f in ['transcripts.gtf', 'skipped.gtf'] %}
+							<a href="{{ file_links[f] }}">
+								<i class="fa fa-file-o" aria-hidden="true"></i>
+								<code>{{ f }}</code>
+							</a>{% if not loop.last %}<br>{% endif %}
+						{% endfor %}
+					</td>
+					<!-- Log files -->
+					<td>
+						{% for f in ['run_cufflinks.log'] %}
+							<a href="{{ file_links[f] }}">
+								<i class="fa fa-file-o" aria-hidden="true"></i>
+								<code>{{ f }}</code>
+							</a>{% if not loop.last %}<br>{% endif %}
+						{% endfor %}
+					</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	{% endfor %}
+{% endblock content %}
