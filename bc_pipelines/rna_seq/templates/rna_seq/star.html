@@ -9,4 +9,15 @@
 
 {% block content %}
 	<h2>STAR Alignment</h2>
+
+	<h2>Original Output of STAR</h2>
+	{% for sample, output_file_links in data_info.raw_output.items() %}
+		<h3>{{ sample }}</h3>
+		<p>Alignment BAM file</p>
+		<ul>
+			<li><a href="{{ output_file_links['Aligned.sortedByCoord.out.bam'] }}">
+				<code>Aligned.sortedByCoord.out.bam</code>
+			</a></li>
+		</ul>
+	{% endfor %}
 {% endblock content %}
