@@ -123,8 +123,11 @@ class FastQCStage(BaseStage):
         data_info['raw_fastqc'] = {}
         for source_p, source in accepted_sources.items():
             data_info['raw_fastqc'][source_p.name] = (
-                '../result/fastqc/{src_name}/{src_name}_fastqc.html'
-                .format(src_name=source_p.stem)
+                '../result/{fastqc_dir}/{src_name}/{src_name}_fastqc.html'
+                .format(
+                    fastqc_dir=result_root.name,
+                    src_name=source_p.stem,
+                )
             )
 
         return data_info
