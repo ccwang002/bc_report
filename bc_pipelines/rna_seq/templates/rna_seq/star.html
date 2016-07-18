@@ -12,25 +12,27 @@
 	<div id="vue-app">
 		<!-- control the display of -->
 		<div>
+			<p>Display alignment statistics in:</p>
 			<label class="radio-inline">
 				<input type="radio" name="display_type" autocomplete="off"
-							 value="num_read" v-model="display_type" checked>
-				Number of reads
+							 value="percent" v-model="display_type" checked>
+				Percentage
 			</label>
 			<label class="radio-inline">
 				<input type="radio" name="display_type" autocomplete="off"
-							 value="percent" v-model="display_type">
-				Percentage
+							 value="num_read" v-model="display_type">
+				Number of reads
 			</label>
 		</div>
 
+		<!-- Alignment table in number of reads -->
 		<table class="table table-striped" v-show="display_type === 'num_read'">
 			<thead>
 			<tr>
 				<th>Condition</th>
 				<th>Sample</th>
 				<th>#reads input</th>
-				<th>#reads uniquely mapped reads</th>
+				<th>#reads uniquely mapped</th>
 				<th>#reads mapped to multiple loci</th>
 				<th>#reads mapped to too many loci</th>
 				<th>#reads unmapped: too many mismatches</th>
@@ -61,6 +63,53 @@
 						'Number of chimeric reads',
 					] %}
 							<td>{{ '{:,d}'.format(data_info.align_stat[sample][num_metric]) }}</td>
+						{% endfor %}
+
+					</tr>
+				{% endfor %}
+			{% endfor %}
+			</tbody>
+		</table>
+
+		<!-- Alignment table in percentage -->
+		<table class="table table-striped" v-show="display_type === 'percent'">
+			<thead>
+			<tr>
+				<th>Condition</th>
+				<th>Sample</th>
+				<th>input (%)</th>
+				<th>uniquely mapped (%)</th>
+				<th>mapped to multiple loci (%)</th>
+				<th>mapped to too many loci (%)</th>
+				<th>unmapped: too many mismatches (%)</th>
+				<th>unmapped: too short (%)</th>
+				<th>unmapped: other (%)</th>
+				<th>chimeric (%)</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for condition, samples in analysis_info.conditions.items() %}
+				{% for sample in samples %}
+					<tr>
+						<!-- condition -->
+						{% if loop.first %}
+							<th rowspan="{{ samples|length }}">{{ condition }}</th>
+						{% endif %}
+						<!-- sample -->
+						<th>{{ sample }}</th>
+						<!-- data -->
+						<td>100%</td>
+						{% for num_metric in [
+							'Uniquely mapped reads %',
+							'% of reads mapped to multiple loci',
+							'% of reads mapped to too many loci',
+							'% of reads unmapped: too many mismatches',
+							'% of reads unmapped: too short',
+							'% of reads unmapped: other',
+							'% of chimeric reads',
+						] %}
+							<td>{{ '{:.2%}'.format(data_info.align_stat[sample][num_metric])
+									}}</td>
 						{% endfor %}
 
 					</tr>
@@ -133,7 +182,7 @@
 		var vm = new Vue({
 			el: '#vue-app',
 			data: {
-				display_type: 'num_read'
+				display_type: 'percent'
 			}
 		});
 	</script>
