@@ -4,6 +4,7 @@ from ..base.fastqc import FastQCStage
 from . import RNASeqStageMixin, here
 from .star import STARStage
 from .cufflinks import CufflinksStage
+from .cuffdiff import CuffdiffStage
 
 
 class RNASeqFastQCStage(RNASeqStageMixin, FastQCStage):
@@ -20,6 +21,7 @@ class RNASeqReport(BaseReport):
         RNASeqFastQCStage,
         STARStage,
         CufflinksStage,
+        CuffdiffStage,
     ]
     static_roots = [
         here / 'static',

@@ -1,0 +1,98 @@
+{% extends 'rna_seq/base.html' %}
+
+{% block title %}Cuffdiff{% endblock title %}
+
+{% block nav %}
+	{% set active = "cuffdiff" %}
+	{% include "rna_seq/_includes/nav.html" %}
+{% endblock nav %}
+
+
+{% block content %}
+	<h2>Cuffdiff</h2>
+	<h3>Original output files</h3>
+	<table class="table table-striped">
+		<thead>
+		<tr>
+			<th>Type</th>
+			<th>isoforms</th>
+			<th>per gene</th>
+			<th>per cds</th>
+			<th>per tss</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<th>Differential expression</th>
+			{% for type in ['isoform', 'gene', 'cds', 'tss'] %}
+				<td>
+					<a href="{{ data_info.raw_output[type + '_exp.diff'] }}">
+						<i class="fa fa-file-o" aria-hidden="true"></i>
+						<code>{{ type + '_exp.diff' }}</code>
+					</a>
+				</td>
+			{% endfor %}
+		</tr>
+		<tr>
+			<th>FPKM tracking</th>
+			{% for type in ['isoforms', 'genes', 'cds', 'tss'] %}
+				<td>
+					<a href="{{ data_info.raw_output[type + '.fpkm_tracking'] }}">
+						<i class="fa fa-file-o" aria-hidden="true"></i>
+						<code>{{ type + '.fpkm_tracking' }}</code>
+					</a>
+				</td>
+			{% endfor %}
+		</tr>
+		<tr>
+			<th>Other trackings</th>
+			{% for type in ['isoforms', 'genes', 'cds', 'tss'] %}
+				<td>
+					{% for tracking_type in ['count', 'read_group'] %}
+						{% set f = '{:s}.{:s}_tracking'.format(type, tracking_type) %}
+						<a href="{{ data_info.raw_output[f] }}">
+							<i class="fa fa-file-o" aria-hidden="true"></i>
+							<code>{{ f }}</code>
+						</a>{% if not loop.last %}<br>{% endif %}
+					{% endfor %}
+				</td>
+			{% endfor %}
+		</tr>
+		</tbody>
+	</table>
+	<p>Other differential tests:</p>
+	<ul>
+		<li>
+			<a href="{{ data_info.raw_output['splicing.diff'] }}">
+				<i class="fa fa-file-o" aria-hidden="true"></i>
+				<code>splicing.diff</code>
+			</a>: Differential splicing tests
+		</li>
+		<li>
+			<a href="{{ data_info.raw_output['cds.diff'] }}">
+				<i class="fa fa-file-o" aria-hidden="true"></i>
+				<code>cds.diff</code>
+			</a>: Differential coding output.
+		</li>
+		<li>
+			<a href="{{ data_info.raw_output['promoters.diff'] }}">
+				<i class="fa fa-file-o" aria-hidden="true"></i>
+				<code>promoters.diff</code>
+			</a>: Differential promoter use.
+		</li>
+	</ul>
+	<p>Run info and log files:</p>
+	<ul>
+		{% for f in [
+			'run.info', 'read_groups.info', 'bias_params.info',
+			'var_model.info', 'run_cuffdiff.log'
+		] %}
+			<li>
+				<a href="{{ data_info.raw_output[f] }}">
+					<i class="fa fa-file-o" aria-hidden="true"></i>
+					<code>{{ f }}</code>
+				</a>
+			</li>
+		{% endfor %}
+	</ul>
+{% endblock content %}
