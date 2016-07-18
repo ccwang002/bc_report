@@ -147,11 +147,12 @@ class STARStage(RNASeqStageMixin, BaseStage):
             })
             condition_counter += len(samples)
 
-        context['plot_num_read'] = {
-            'data': plot_num_read_data,
+        context['plot'] = {
             'condition_bands': condition_bands,
+            'data': {
+                'num_read': plot_num_read_data,
+            }
         }
-
         return context
 
     def collect_raw_output(self, analysis_info: AnalysisInfo):
