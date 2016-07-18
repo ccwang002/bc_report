@@ -1,6 +1,7 @@
 import ast
 from datetime import datetime
 from pathlib import Path
+from seaborn.palettes import husl_palette
 from bc_report.info import AnalysisInfo
 from bc_report import create_logger
 from ..base.report import BaseStage
@@ -59,6 +60,27 @@ class STARStage(RNASeqStageMixin, BaseStage):
     template_entrances = ['rna_seq/star.html']
     result_folder_name = 'STAR'
 
+    NUM_READ_METRICS = [
+        'Number of input reads',
+        'Uniquely mapped reads number',
+        'Number of reads mapped to multiple loci',
+        'Number of reads mapped to too many loci',
+        'Number of reads unmapped: too many mismatches',
+        'Number of reads unmapped: too short',
+        'Number of reads unmapped: other',
+        'Number of chimeric reads',
+    ]
+
+    PERCENT_METRICS = [
+        'Uniquely mapped reads %',
+        '% of reads mapped to multiple loci',
+        '% of reads mapped to too many loci',
+        '% of reads unmapped: too many mismatches',
+        '% of reads unmapped: too short',
+        '% of reads unmapped: other',
+        '% of chimeric reads',
+    ]
+
     def parse(self, analysis_info: AnalysisInfo):
         data_info = super().parse(analysis_info)
 
@@ -73,6 +95,49 @@ class STARStage(RNASeqStageMixin, BaseStage):
         logger.info('Generating raw output file links')
         data_info['raw_output'] = self.collect_raw_output(analysis_info)
         return data_info
+
+    def get_context_data(self, data_info):
+        context = super().get_context_data(data_info)
+        context['NUM_READ_METRICS'] = self.NUM_READ_METRICS
+        context['PERCENT_METRICS'] = self.PERCENT_METRICS
+
+        # Prepare data for plotting
+        analysis_info = self.report.analysis_info
+        plot_num_read_data = []
+        for metric in reversed(self.NUM_READ_METRICS[1:]):
+            plot_num_read_data.append({
+                'name': metric,
+                'data': [
+                    data_info['align_stat'][sample][metric]
+                    for sample in analysis_info.samples
+                ],
+            })
+
+        condition_bands = []
+        condition_counter = 0
+        for (condition, samples), color in zip(
+            analysis_info.conditions.items(),
+            husl_palette(len(analysis_info.conditions), l=0.8, s=0.6),
+        ):
+            condition_bands.append({
+                'from': condition_counter - 0.5,
+                'to': condition_counter + len(samples) - 0.5,
+                'color': 'rgba({:d}, {:d}, {:d}, 0.4)'.format(
+                    *[int(c * 255) for c in color]
+                ),
+                'label': {
+                    'text': 'Condition %s' % condition,
+                    'align': 'right',
+                }
+            })
+            condition_counter += len(samples)
+
+        context['plot_num_read'] = {
+            'data': plot_num_read_data,
+            'condition_bands': condition_bands,
+        }
+
+        return context
 
     def collect_raw_output(self, analysis_info: AnalysisInfo):
         """Render the link to the raw output files"""
