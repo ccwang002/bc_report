@@ -192,7 +192,9 @@
 			},
 			watch: {
 				display_type: function(val, OldVal) {
-					$('.chart', 'article').highcharts().reflow();
+					$('.chart', 'article').each(function(){
+						$(this).highcharts().reflow();
+					});
 				}
 			}
 		});
