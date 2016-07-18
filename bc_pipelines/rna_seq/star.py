@@ -101,12 +101,25 @@ class STARStage(RNASeqStageMixin, BaseStage):
         context['NUM_READ_METRICS'] = self.NUM_READ_METRICS
         context['PERCENT_METRICS'] = self.PERCENT_METRICS
 
+        METRICS_DISPLAY = [
+            'unique',
+            'mulit-map (multiple loci)',
+            'multi-map (too many loci)',
+            'unmapped (too many mismatches)',
+            'unmapped (too short)',
+            'unmapped (other)',
+            'chimeric',
+        ]
+
         # Prepare data for plotting
         analysis_info = self.report.analysis_info
         plot_num_read_data = []
-        for metric in reversed(self.NUM_READ_METRICS[1:]):
+        for metric, metric_display in zip(
+            reversed(self.NUM_READ_METRICS[1:]),
+            reversed(METRICS_DISPLAY),
+        ):
             plot_num_read_data.append({
-                'name': metric,
+                'name': metric_display,
                 'data': [
                     data_info['align_stat'][sample][metric]
                     for sample in analysis_info.samples
