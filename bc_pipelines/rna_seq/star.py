@@ -126,6 +126,7 @@ class STARStage(RNASeqStageMixin, BaseStage):
                 ],
             })
 
+        # Compute the color for condition plot bands
         condition_bands = []
         condition_counter = 0
         for (condition, samples), color in zip(
@@ -139,8 +140,9 @@ class STARStage(RNASeqStageMixin, BaseStage):
                     *[int(c * 255) for c in color]
                 ),
                 'label': {
-                    'text': 'Condition %s' % condition,
+                    'text': condition,
                     'align': 'right',
+                    'x': -5,
                 }
             })
             condition_counter += len(samples)
