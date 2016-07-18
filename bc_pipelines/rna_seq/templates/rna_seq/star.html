@@ -9,6 +9,67 @@
 
 {% block content %}
 	<h2>STAR Alignment</h2>
+	<div id="vue-app">
+		<!-- control the display of -->
+		<div>
+			<label class="radio-inline">
+				<input type="radio" name="display_type" autocomplete="off"
+							 value="num_read" v-model="display_type" checked>
+				Number of reads
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="display_type" autocomplete="off"
+							 value="percent" v-model="display_type">
+				Percentage
+			</label>
+		</div>
+
+		<table class="table table-striped" v-show="display_type === 'num_read'">
+			<thead>
+			<tr>
+				<th>Condition</th>
+				<th>Sample</th>
+				<th>#reads input</th>
+				<th>#reads uniquely mapped reads</th>
+				<th>#reads mapped to multiple loci</th>
+				<th>#reads mapped to too many loci</th>
+				<th>#reads unmapped: too many mismatches</th>
+				<th>#reads unmapped: too short</th>
+				<th>#reads unmapped: other</th>
+				<th>#reads chimeric</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for condition, samples in analysis_info.conditions.items() %}
+				{% for sample in samples %}
+					<tr>
+						<!-- condition -->
+						{% if loop.first %}
+							<th rowspan="{{ samples|length }}">{{ condition }}</th>
+						{% endif %}
+						<!-- sample -->
+						<th>{{ sample }}</th>
+						<!-- data -->
+						{% for num_metric in [
+						'Number of input reads',
+						'Uniquely mapped reads number',
+						'Number of reads mapped to multiple loci',
+						'Number of reads mapped to too many loci',
+						'Number of reads unmapped: too many mismatches',
+						'Number of reads unmapped: too short',
+						'Number of reads unmapped: other',
+						'Number of chimeric reads',
+					] %}
+							<td>{{ '{:,d}'.format(data_info.align_stat[sample][num_metric]) }}</td>
+						{% endfor %}
+
+					</tr>
+				{% endfor %}
+			{% endfor %}
+			</tbody>
+		</table>
+	</div><!-- /#vue-app -->
+
 
 	<h2>Original output files</h2>
 	{% for condition, samples in analysis_info.conditions.items() %}
@@ -60,3 +121,20 @@
 		</table>
 	{% endfor %}
 {% endblock content %}
+
+{% block js %}
+	{{ super() }}
+	<script src="{{ static('js/vendors/vue.min.js') }}" type="text/javascript" charset="utf-8"></script>
+{% endblock js %}
+
+{% block scripts %}
+	{{ super() }}
+	<script>
+		var vm = new Vue({
+			el: '#vue-app',
+			data: {
+				display_type: 'num_read'
+			}
+		});
+	</script>
+{% endblock scripts %}
