@@ -41,81 +41,84 @@
 		</div>
 
 		<!-- Alignment table in number of reads -->
-		<h3>Table</h3>
-		<table class="table table-striped" v-show="display_type === 'num_read'">
-			<thead>
-			<tr>
-				<th>Condition</th>
-				<th>Sample</th>
-				<th>#reads input</th>
-				<th>#reads uniquely mapped</th>
-				<th>#reads mapped to multiple loci</th>
-				<th>#reads mapped to too many loci</th>
-				<th>#reads unmapped: too many mismatches</th>
-				<th>#reads unmapped: too short</th>
-				<th>#reads unmapped: other</th>
-				<th>#reads chimeric</th>
-			</tr>
-			</thead>
-			<tbody>
-			{% for condition, samples in analysis_info.conditions.items() %}
-				{% for sample in samples %}
-					<tr>
-						<!-- condition -->
-						{% if loop.first %}
-							<th rowspan="{{ samples|length }}">{{ condition }}</th>
-						{% endif %}
-						<!-- sample -->
-						<th>{{ sample }}</th>
-						<!-- data -->
-						{% for num_metric in NUM_READ_METRICS %}
-							<td>{{ '{:,d}'.format(data_info.align_stat[sample][num_metric]) }}</td>
-						{% endfor %}
+		<div v-show="display_type === 'num_read'">
+			<h3>Table</h3>
+			<table class="table table-striped">
+				<thead>
+				<tr>
+					<th>Condition</th>
+					<th>Sample</th>
+					<th>#reads input</th>
+					<th>#reads uniquely mapped</th>
+					<th>#reads mapped to multiple loci</th>
+					<th>#reads mapped to too many loci</th>
+					<th>#reads unmapped: too many mismatches</th>
+					<th>#reads unmapped: too short</th>
+					<th>#reads unmapped: other</th>
+					<th>#reads chimeric</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for condition, samples in analysis_info.conditions.items() %}
+					{% for sample in samples %}
+						<tr>
+							<!-- condition -->
+							{% if loop.first %}
+								<th rowspan="{{ samples|length }}">{{ condition }}</th>
+							{% endif %}
+							<!-- sample -->
+							<th>{{ sample }}</th>
+							<!-- data -->
+							{% for num_metric in NUM_READ_METRICS %}
+								<td>{{ '{:,d}'.format(data_info.align_stat[sample][num_metric]) }}</td>
+							{% endfor %}
 
-					</tr>
+						</tr>
+					{% endfor %}
 				{% endfor %}
-			{% endfor %}
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</div>
 
 		<!-- Alignment table in percentage -->
-		<h3>Table</h3>
-		<table class="table table-striped" v-show="display_type === 'percent'">
-			<thead>
-			<tr>
-				<th>Condition</th>
-				<th>Sample</th>
-				<th>input (%)</th>
-				<th>uniquely mapped (%)</th>
-				<th>mapped to multiple loci (%)</th>
-				<th>mapped to too many loci (%)</th>
-				<th>unmapped: too many mismatches (%)</th>
-				<th>unmapped: too short (%)</th>
-				<th>unmapped: other (%)</th>
-				<th>chimeric (%)</th>
-			</tr>
-			</thead>
-			<tbody>
-			{% for condition, samples in analysis_info.conditions.items() %}
-				{% for sample in samples %}
-					<tr>
-						<!-- condition -->
-						{% if loop.first %}
-							<th rowspan="{{ samples|length }}">{{ condition }}</th>
-						{% endif %}
-						<!-- sample -->
-						<th>{{ sample }}</th>
-						<!-- data -->
-						<td>100%</td>
-						{% for num_metric in PERCENT_METRICS %}
-							<td>{{ '{:.2%}'.format(data_info.align_stat[sample][num_metric]) }}</td>
-						{% endfor %}
-
-					</tr>
+		<div v-show="display_type === 'percent'">
+			<h3>Table</h3>
+			<table class="table table-striped">
+				<thead>
+				<tr>
+					<th>Condition</th>
+					<th>Sample</th>
+					<th>input (%)</th>
+					<th>uniquely mapped (%)</th>
+					<th>mapped to multiple loci (%)</th>
+					<th>mapped to too many loci (%)</th>
+					<th>unmapped: too many mismatches (%)</th>
+					<th>unmapped: too short (%)</th>
+					<th>unmapped: other (%)</th>
+					<th>chimeric (%)</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for condition, samples in analysis_info.conditions.items() %}
+					{% for sample in samples %}
+						<tr>
+							<!-- condition -->
+							{% if loop.first %}
+								<th rowspan="{{ samples|length }}">{{ condition }}</th>
+							{% endif %}
+							<!-- sample -->
+							<th>{{ sample }}</th>
+							<!-- data -->
+							<td>100%</td>
+							{% for num_metric in PERCENT_METRICS %}
+								<td>{{ '{:.2%}'.format(data_info.align_stat[sample][num_metric]) }}</td>
+							{% endfor %}
+						</tr>
+					{% endfor %}
 				{% endfor %}
-			{% endfor %}
-			</tbody>
-		</table>
+				</tbody>
+			</table>
+		</div>
 	</div><!-- /#vue-app -->
 
 
