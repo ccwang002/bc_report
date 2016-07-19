@@ -24,8 +24,8 @@ def find_version(*path_parts):
     raise RuntimeError("Unable to find version string.")
 
 
-with utf8_open("README.rst") as readme_f:
-    with utf8_open("CHANGELOG.rst") as changes_f:
+with utf8_open("README.md") as readme_f:
+    with utf8_open("CHANGELOG.md") as changes_f:
         long_description = readme_f.read() + '\n' + changes_f.read()
 
 # Recursively find all files under bc_pipelines/*/{static,templates}
