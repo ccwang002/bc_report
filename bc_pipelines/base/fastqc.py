@@ -136,7 +136,6 @@ class FastQCStage(BaseStage):
                 'zip': zip_link,
                 'stem': source_p.stem,
             }
-
         return data_info
 
     def get_context_data(self, data_info):

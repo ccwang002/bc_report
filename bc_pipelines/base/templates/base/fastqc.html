@@ -41,8 +41,7 @@
 						{% if loop.first %}
 							<th rowspan="2">{{ sample }}</th>
 						{% endif %}
-						<td><a href="{{ data_info.raw_output[source].html }}">{{ source
-								}}</a></td>
+						<td><a href="{{ data_info.raw_output[source].html }}">{{ source }}</a></td>
 						{% for module in MODULES %}
 							<td>
 								{% if module in qc_info %}

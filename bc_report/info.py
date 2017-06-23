@@ -33,6 +33,8 @@ class AnalysisInfo:
         data_sources = OrderedDict()
         for data_source in self._raw['data_sources']:
             name, info = next(iter(data_source.items()))
+            # Ensure it doesnt contain any path
+            name = Path(name).name
             data_sources[name] = (
                 DataSource(name, info['path'], info['type'], info['strand'])
             )
