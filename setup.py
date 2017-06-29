@@ -88,13 +88,17 @@ setup(
         'all': all_dep,
     },
 
-    packages=find_packages(
-        include=['bc_report', 'bc_pipelines.*'],
-        exclude=[
-            'contrib', 'docs', 'examples',
-            '*.tests', '*.tests.*', 'tests.*', 'tests',
-        ]
-    ),
+    packages=[
+        *find_packages(
+            include=['bc_report'],
+            exclude=[
+                'contrib', 'docs', 'examples',
+                '*.tests', '*.tests.*', 'tests.*', 'tests',
+            ]
+        ),
+        'bc_pipelines.base',
+        'bc_pipelines.rna_seq',
+    ],
     package_data=package_data,
     zip_safe=False,
     entry_points={
